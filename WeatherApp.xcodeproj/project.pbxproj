@@ -9,21 +9,39 @@
 /* Begin PBXBuildFile section */
 		DB1234E328AABC0E00CADE8C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1234E228AABC0E00CADE8C /* AppDelegate.swift */; };
 		DB1234E528AABC0E00CADE8C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1234E428AABC0E00CADE8C /* SceneDelegate.swift */; };
-		DB1234E728AABC0E00CADE8C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1234E628AABC0E00CADE8C /* ViewController.swift */; };
 		DB1234EC28AABC0F00CADE8C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DB1234EB28AABC0F00CADE8C /* Assets.xcassets */; };
 		DB1234EF28AABC0F00CADE8C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB1234ED28AABC0F00CADE8C /* LaunchScreen.storyboard */; };
 		DB1234FC28AB8BD200CADE8C /* Rubik.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DB1234FB28AB8BD200CADE8C /* Rubik.ttf */; };
+		DB12350428ABAE2600CADE8C /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB12350328ABAE2600CADE8C /* Extensions.swift */; };
+		DB12350628ABAF8D00CADE8C /* ColorSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB12350528ABAF8D00CADE8C /* ColorSet.swift */; };
+		DB12350828ABDFEE00CADE8C /* ImageSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB12350728ABDFEE00CADE8C /* ImageSet.swift */; };
+		DB12350B28AC1A8E00CADE8C /* CustomLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB12350A28AC1A8E00CADE8C /* CustomLabel.swift */; };
+		DB12350D28AC1AF300CADE8C /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB12350C28AC1AF300CADE8C /* CustomButton.swift */; };
+		DB12350F28AFA30800CADE8C /* CustomSegmentedControll.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB12350E28AFA30800CADE8C /* CustomSegmentedControll.swift */; };
+		DB12351128AFA83200CADE8C /* Segments.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB12351028AFA83200CADE8C /* Segments.swift */; };
+		DB12351328AFC9FE00CADE8C /* FontRubik.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB12351228AFC9FE00CADE8C /* FontRubik.swift */; };
+		DB12351528AFD02B00CADE8C /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB12351428AFD02B00CADE8C /* SettingsViewController.swift */; };
+		DB12351728B0CA6A00CADE8C /* OnBoardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB12351628B0CA6A00CADE8C /* OnBoardingViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		DB1234DF28AABC0E00CADE8C /* WeatherApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeatherApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB1234E228AABC0E00CADE8C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DB1234E428AABC0E00CADE8C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		DB1234E628AABC0E00CADE8C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		DB1234EB28AABC0F00CADE8C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DB1234EE28AABC0F00CADE8C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DB1234F028AABC0F00CADE8C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DB1234FB28AB8BD200CADE8C /* Rubik.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Rubik.ttf; sourceTree = "<group>"; };
+		DB12350328ABAE2600CADE8C /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		DB12350528ABAF8D00CADE8C /* ColorSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSet.swift; sourceTree = "<group>"; };
+		DB12350728ABDFEE00CADE8C /* ImageSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSet.swift; sourceTree = "<group>"; };
+		DB12350A28AC1A8E00CADE8C /* CustomLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLabel.swift; sourceTree = "<group>"; };
+		DB12350C28AC1AF300CADE8C /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
+		DB12350E28AFA30800CADE8C /* CustomSegmentedControll.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSegmentedControll.swift; sourceTree = "<group>"; };
+		DB12351028AFA83200CADE8C /* Segments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Segments.swift; sourceTree = "<group>"; };
+		DB12351228AFC9FE00CADE8C /* FontRubik.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontRubik.swift; sourceTree = "<group>"; };
+		DB12351428AFD02B00CADE8C /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		DB12351628B0CA6A00CADE8C /* OnBoardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,9 +74,11 @@
 		DB1234E128AABC0E00CADE8C /* WeatherApp */ = {
 			isa = PBXGroup;
 			children = (
+				DB1234FE28ABADA400CADE8C /* onBoarding */,
+				DB1234FF28ABADB800CADE8C /* Settings */,
+				DB12350028ABADD800CADE8C /* Support */,
 				DB1234E228AABC0E00CADE8C /* AppDelegate.swift */,
 				DB1234E428AABC0E00CADE8C /* SceneDelegate.swift */,
-				DB1234E628AABC0E00CADE8C /* ViewController.swift */,
 				DB1234ED28AABC0F00CADE8C /* LaunchScreen.storyboard */,
 				DB1234F928AB8B6E00CADE8C /* Assets */,
 				DB1234F028AABC0F00CADE8C /* Info.plist */,
@@ -81,6 +101,45 @@
 				DB1234FB28AB8BD200CADE8C /* Rubik.ttf */,
 			);
 			path = Font;
+			sourceTree = "<group>";
+		};
+		DB1234FE28ABADA400CADE8C /* onBoarding */ = {
+			isa = PBXGroup;
+			children = (
+				DB12351628B0CA6A00CADE8C /* OnBoardingViewController.swift */,
+			);
+			path = onBoarding;
+			sourceTree = "<group>";
+		};
+		DB1234FF28ABADB800CADE8C /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				DB12351428AFD02B00CADE8C /* SettingsViewController.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		DB12350028ABADD800CADE8C /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				DB12350928AC1A7400CADE8C /* Custom */,
+				DB12350328ABAE2600CADE8C /* Extensions.swift */,
+				DB12350528ABAF8D00CADE8C /* ColorSet.swift */,
+				DB12351028AFA83200CADE8C /* Segments.swift */,
+				DB12350728ABDFEE00CADE8C /* ImageSet.swift */,
+				DB12351228AFC9FE00CADE8C /* FontRubik.swift */,
+			);
+			path = Support;
+			sourceTree = "<group>";
+		};
+		DB12350928AC1A7400CADE8C /* Custom */ = {
+			isa = PBXGroup;
+			children = (
+				DB12350A28AC1A8E00CADE8C /* CustomLabel.swift */,
+				DB12350C28AC1AF300CADE8C /* CustomButton.swift */,
+				DB12350E28AFA30800CADE8C /* CustomSegmentedControll.swift */,
+			);
+			path = Custom;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -154,9 +213,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DB1234E728AABC0E00CADE8C /* ViewController.swift in Sources */,
+				DB12350828ABDFEE00CADE8C /* ImageSet.swift in Sources */,
+				DB12350F28AFA30800CADE8C /* CustomSegmentedControll.swift in Sources */,
 				DB1234E328AABC0E00CADE8C /* AppDelegate.swift in Sources */,
+				DB12351728B0CA6A00CADE8C /* OnBoardingViewController.swift in Sources */,
+				DB12350B28AC1A8E00CADE8C /* CustomLabel.swift in Sources */,
+				DB12350D28AC1AF300CADE8C /* CustomButton.swift in Sources */,
+				DB12350628ABAF8D00CADE8C /* ColorSet.swift in Sources */,
 				DB1234E528AABC0E00CADE8C /* SceneDelegate.swift in Sources */,
+				DB12351328AFC9FE00CADE8C /* FontRubik.swift in Sources */,
+				DB12350428ABAE2600CADE8C /* Extensions.swift in Sources */,
+				DB12351128AFA83200CADE8C /* Segments.swift in Sources */,
+				DB12351528AFD02B00CADE8C /* SettingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -293,6 +361,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 46SB5959W9;
@@ -300,6 +369,7 @@
 				INFOPLIST_FILE = WeatherApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIStatusBarHidden = NO;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
@@ -321,6 +391,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 46SB5959W9;
@@ -328,6 +399,7 @@
 				INFOPLIST_FILE = WeatherApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIStatusBarHidden = NO;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
