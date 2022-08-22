@@ -6,8 +6,21 @@
 //
 
 import UIKit
+import CoreLocation
+
+protocol LocationStatusChangesDelegate {
+    func locationAuthStatusDidChange(status: CLAuthorizationStatus)
+}
 
 class OnBoardingViewController: UIViewController {
+
+    weak var coordinator: MainCoordinator?
+
+    private var locationManager: CLLocationManager?
+
+    private let defaults = UserDefaults.standard
+
+    var delegate: LocationStatusChangesDelegate?
 
     // MARK: доработать согласно макету
 
@@ -45,7 +58,8 @@ class OnBoardingViewController: UIViewController {
     private lazy var onGeoButton: UIButton = {
         let button = CustomButton(title: "ИСПОЛЬЗОВАТЬ МЕСТОПОЛОЖЕНИЕ  УСТРОЙСТВА",
                                   font: UIFont(name: FontRubik.medium.rawValue, size: 12)!) {
-            print("addGeo")
+            self.useLocation()
+
         }
         return button
     }()
@@ -64,11 +78,21 @@ class OnBoardingViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = ColorSet.colorSet(.blue)
+
+        locationManager = CLLocationManager()
+
         setupConstraints()
+
+        // проверка на первый запуск приложения
+        if let isWasLaunched = defaults.object(forKey: "isWasLaunched")  as? Bool, !isWasLaunched {
+            defaults.set(true, forKey: "isWasLaunched")
+        }
+
     }
 
     private func setupConstraints() {
+        view.backgroundColor = ColorSet.colorSet(.blue)
+
         view.addSubviews(onBordingImage, titleLabelTop, titleLabelMiddle, titleLabelBottom,
                         onGeoButton, cancelGeoButton)
 
@@ -103,7 +127,10 @@ class OnBoardingViewController: UIViewController {
     @objc private func cancelButton() {
         print("cancel")
     }
-    
+
+    func useLocation() {
+        print("addGeo")
+    }
 
 
 }
