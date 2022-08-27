@@ -25,7 +25,7 @@ final class SettingsViewController: UIViewController {
     private lazy var titleSetting: UILabel = {
         let label = CustomLabel(text: "Настройки",
                                 textColor: .black,
-                                font: UIFont(name: FontRubik.medium.rawValue, size: 18)!)
+                                font: UIFont.rubikMedium18)
         return label
     }()
 
@@ -33,28 +33,28 @@ final class SettingsViewController: UIViewController {
     private lazy var labelTemp: UILabel = {
         let label = CustomLabel(text: "Температура",
                                 textColor: ColorSet.colorSet(.gray),
-                                font: UIFont(name: FontRubik.regular.rawValue, size: 16)!)
+                                font: UIFont.rubikRegular16)
         return label
     }()
 
     private lazy var labelWindSpeed: UILabel = {
         let label = CustomLabel(text: "Скорость ветра",
                                 textColor: ColorSet.colorSet(.gray),
-                                font: UIFont(name: FontRubik.regular.rawValue, size: 16)!)
+                                font: UIFont.rubikRegular16)
         return label
     }()
 
     private lazy var labelTimeFormat: UILabel = {
         let label = CustomLabel(text: "Формат времени",
                                 textColor: ColorSet.colorSet(.gray),
-                                font: UIFont(name: FontRubik.regular.rawValue, size: 16)!)
+                                font: UIFont.rubikRegular16)
         return label
     }()
 
     private lazy var labelNotification: UILabel = {
         let label = CustomLabel(text: "Уведомления",
                                 textColor: ColorSet.colorSet(.gray),
-                                font: UIFont(name: FontRubik.regular.rawValue, size: 16)!)
+                                font: UIFont.rubikRegular16)
         return label
     }()
 
@@ -105,7 +105,7 @@ final class SettingsViewController: UIViewController {
 
     private lazy var setupSettingsButton: UIButton = {
         let button = CustomButton(title: "Установить",
-                                  font: UIFont(name: FontRubik.regular.rawValue, size: 16)!) {
+                                  font: UIFont.rubikRegular16) {
             print("setup")
         }
         return button

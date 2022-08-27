@@ -6,43 +6,112 @@
 //
 
 import Foundation
+import UIKit
 
 
-class NetworkService {
+protocol NetworkServiceDelegate {
+    func fetchWeather(_ networking: NetworkServiceProtocol, _ modelWeather: Weather)
+    func fetchFailError(_ error: Error)
+}
+
+protocol NetworkServiceProtocol {
+    func fetchLocationWeather(longitude: Double, latitute: Double)
+}
+
+class NetworkService: NetworkServiceProtocol {
 
     private let mainQueue = DispatchQueue.main
+    var units: String = "metric"
+    var dataDelegate: NetworkServiceDelegate?
 
-    private let apiKey = "8fdb51a42453a2b8d06b282efa0b2bf5"
+    private let dataKey: [UInt8] = [0x34, 0x61, 0x61, 0x33, 0x31, 0x65, 0x36, 0x38,
+                                    0x62, 0x37, 0x32, 0x36, 0x33, 0x35, 0x65, 0x36,
+                                    0x63, 0x35, 0x62, 0x64, 0x32, 0x65, 0x34, 0x30,
+                                    0x37, 0x38, 0x31, 0x65, 0x35, 0x34, 0x36, 0x39]
 
-    var units: WeatherUnits = .metric
+    private lazy var urlComponents: URLComponents = {
+        var component = URLComponents()
+        component.scheme = "https"
+        component.host = "api.openweathermap.org"
+        component.path = "/data/2.5/onecall"
+        return component
+    }()
 
-    func requestCurrentWeather(longitude: Double, latitute: Double, completion: @escaping (Result<Data, NetworkError>) -> Void) {
-        let session = URLSession.shared
-        let currentWeather = URL(string: "https://api.openweathermap.org/data/2.5/weather?lat=\(latitute)&lon=\(longitude)&appid=\(apiKey)&units=\(units.rawValue)&lang=ru")!
-        let task = session.dataTask(with: currentWeather) { data, response, error in
-            guard error == nil else {
-                completion(.failure(.unknownError))
-                return
-            }
-                let weatherData = String(data: data!, encoding: .utf8)
-                print(weatherData?.description as Any)
+
+// MARK: - getting weather by geolocation
+    func fetchLocationWeather(longitude: Double, latitute: Double) {
+        let keyApi = fetchApiKeyString()
+        urlComponents.queryItems = []
+        urlComponents.queryItems = [
+            URLQueryItem(name: "lang", value: "ru"),
+            URLQueryItem(name: "units", value: units),
+            URLQueryItem(name: "exclude", value: "minutely,alerts"),
+            URLQueryItem(name: "appid", value: keyApi),
+            URLQueryItem(name: "lat", value: "\(latitute)"),
+            URLQueryItem(name: "lon", value: "\(longitude)")
+        ]
+        if let url = urlComponents.url?.absoluteString {
+            print(url)
+            perfomeUpdateRequest(url: url)
+        } else {
+            self.dataDelegate?.fetchFailError(NetworkError.serverError)
         }
-        task.resume()
+    }
+
+    private func fetchApiKeyString() -> String {
+        let data = Data(dataKey)
+        let key = String(data: data, encoding: .utf8)
+        return key ?? ""
+    }
+
+    private func perfomRequest(url: String, comletion: @escaping (Result<Data, NetworkError>) -> Void ) {
+        if let url = URL(string: url) {
+            mainQueue.async {
+                let task = URLSession.shared.dataTask(with: url) { data, response, error in
+                    guard error == nil else {
+                        comletion(.failure(.serverError))
+                        return
+                    }
+                    if let data = data {
+                        comletion(.success(data))
+                        let stringJSON = String(data: data, encoding: .utf8)
+                        print(stringJSON!)
+                    }
+                }
+                task.resume()
+            }
+        }
+    }
+
+    private func parseJSON(weatherData data: Data) -> Weather? {
+        let decoder = JSONDecoder()
+
+        do {
+            let decoderData = try decoder.decode(Weather.self, from: data)
+            return decoderData
+        } catch {
+            return nil
+        }
+    }
+
+    private func perfomeUpdateRequest(url: String) {
+        perfomRequest(url: url) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let data):
+                print(data)
+                if let weather = self.parseJSON(weatherData: data) {
+                    self.dataDelegate?.fetchWeather(self, weather)
+                }
+            case .failure(let error):
+                self.dataDelegate?.fetchFailError(error)
+            }
+        }
+
     }
 
 
-    func requestDailyWeather(longitude: Double, latitute: Double, completion: @escaping (Result<Data, NetworkError>) -> Void) {
-        let session = URLSession.shared
-        let currentWeather = URL(string: "https://api.openweathermap.org/data/2.5/forecast?lat=\(latitute)&lon=\(longitude)&appid=\(apiKey)&units=\(units.rawValue)&lang=ru")!
-        let task = session.dataTask(with: currentWeather) { data, response, error in
-            guard error == nil else {
-                completion(.failure(.unknownError))
-                return
-            }
-                let weatherData = String(data: data!, encoding: .utf8)
-                print(weatherData?.description as Any)
-        }
-        task.resume()
-    }
+
+
 
 }

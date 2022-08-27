@@ -16,7 +16,6 @@ public extension UIView {
             self.addSubview($0)
         }
     }
-    
 }
 
 public extension UIColor {
@@ -67,7 +66,6 @@ extension UIImageView {
             imageView = UIImageView()
         } else {
             imageView = UIImageView(image: UIImage(named: name))
-
         }
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView

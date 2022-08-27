@@ -8,19 +8,14 @@
 import UIKit
 import CoreLocation
 
-protocol LocationStatusChangesDelegate {
-    func locationAuthStatusDidChange(status: CLAuthorizationStatus)
-}
 
 class OnBoardingViewController: UIViewController {
 
-    weak var coordinator: MainCoordinator?
+    weak var coordinator: AppCoordinator?
 
-    private var locationManager: CLLocationManager?
+    private var locationService = LocationService()
 
     private let defaults = UserDefaults.standard
-
-    var delegate: LocationStatusChangesDelegate?
 
     // MARK: доработать согласно макету
 
@@ -28,7 +23,7 @@ class OnBoardingViewController: UIViewController {
 
     private lazy var titleLabelTop: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: FontRubik.semiBold.rawValue, size: 16)!
+        label.font = UIFont.rubikBold16
         label.text = "Разрешить приложению  Weather использовать данные \nо местоположении вашего устройства"
         label.textColor = .white
         label.textAlignment = .center
@@ -37,7 +32,7 @@ class OnBoardingViewController: UIViewController {
     }()
     private lazy var titleLabelMiddle: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: FontRubik.regular.rawValue, size: 14)!
+        label.font = UIFont.rubikRegular14
         label.text = "Чтобы получить более точные прогнозы \nпогоды во время движения или путешествия"
         label.textColor = .white
         label.textAlignment = .center
@@ -47,7 +42,7 @@ class OnBoardingViewController: UIViewController {
 
     private lazy var titleLabelBottom: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: FontRubik.regular.rawValue, size: 14)!
+        label.font = UIFont.rubikRegular14
         label.text = "Вы можете изменить свой выбор в любое \nвремя из меню приложения"
         label.textColor = .white
         label.textAlignment = .center
@@ -57,7 +52,7 @@ class OnBoardingViewController: UIViewController {
 
     private lazy var onGeoButton: UIButton = {
         let button = CustomButton(title: "ИСПОЛЬЗОВАТЬ МЕСТОПОЛОЖЕНИЕ  УСТРОЙСТВА",
-                                  font: UIFont(name: FontRubik.medium.rawValue, size: 12)!) {
+                                  font: UIFont.rubikMedium12) {
             self.useLocation()
 
         }
@@ -70,23 +65,19 @@ class OnBoardingViewController: UIViewController {
         button.titleLabel?.textAlignment = .right
         button.tintColor = .white
         button.setTitle("НЕТ, Я БУДУ ДОБАВЛЯТЬ ЛОКАЦИИ", for: .normal)
-        button.titleLabel?.font = UIFont(name: FontRubik.regular.rawValue, size: 16)!
+        button.titleLabel?.font = UIFont.rubikRegular16
         button.addTarget(self, action: #selector(cancelButton), for: .touchUpInside)
         return button
     }()
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
 
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        locationManager = CLLocationManager()
-
         setupConstraints()
 
-        // проверка на первый запуск приложения
-        if let isWasLaunched = defaults.object(forKey: "isWasLaunched")  as? Bool, !isWasLaunched {
-            defaults.set(true, forKey: "isWasLaunched")
-        }
 
     }
 
@@ -124,12 +115,15 @@ class OnBoardingViewController: UIViewController {
         ])
     }
 
+
     @objc private func cancelButton() {
-        print("cancel")
+        defaults.set(true, forKey: "isWasRun")
     }
 
     func useLocation() {
-        print("addGeo")
+        locationService.startLocationManager()
+        defaults.set(true, forKey: "isWasRun")
+
     }
 
 

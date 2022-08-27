@@ -9,13 +9,12 @@ import UIKit
 
 final class CustomSegmentedControll: UISegmentedControl {
 
-
     init(items: [String]) {
         super.init(items: items)
         self.translatesAutoresizingMaskIntoConstraints = false
         self.selectedSegmentTintColor = ColorSet.colorSet(.blue)
         self.setTitleTextAttributes([NSAttributedString.Key.foregroundColor : UIColor.white], for: .selected)
-        self.setTitleTextAttributes([NSAttributedString.Key.font : UIFont(name: FontRubik.regular.rawValue, size: 16) as Any], for: .normal)
+        self.setTitleTextAttributes([NSAttributedString.Key.font : UIFont.rubikRegular16 as Any], for: .normal)
         self.setWidth(40, forSegmentAt: 0)
         self.setWidth(40, forSegmentAt: 1)
         self.backgroundColor = ColorSet.colorSet(.beige)
