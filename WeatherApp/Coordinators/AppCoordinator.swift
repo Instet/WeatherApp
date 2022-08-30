@@ -44,7 +44,9 @@ class AppCoordinator: CoordinatorProtocol {
     }
 
     func startApp() {
-        let vc = PageViewController()
+        // MARK: - debug
+        let vc = WeatherViewController()
+//        let vc = PageViewController()
         vc.coordinato = self
         navigationController.pushViewController(vc, animated: true)
     }

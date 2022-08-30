@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-enum ColorSet {
+public enum ColorSet {
 
     case blue
     case yellow
@@ -18,6 +18,7 @@ enum ColorSet {
     case backgroundPath
     case green
     case gray
+    case border
 
     static func colorSet(_ color: ColorSet) -> UIColor {
         switch color {
@@ -37,6 +38,8 @@ enum ColorSet {
             return UIColor(named: "Green")!
         case .gray:
             return UIColor(named: "Gray")!
+        case .border:
+            return UIColor(named: "Border")!
         }
     }
 
