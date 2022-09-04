@@ -8,47 +8,43 @@
 import Foundation
 import UIKit
 
-protocol CoordinatorProtocol {
+protocol CoordinatorProtocol: AnyObject {
 
-    var parentCoordinator: CoordinatorProtocol? { get set }
-
-    var children: [CoordinatorProtocol] { get set }
-
-    var navigationController: UINavigationController { get set }
+    var navigationController: UINavigationController? { get set }
 
     func start()
+    func startApp()
+    func poptoRootVC()
 }
 
 
 class AppCoordinator: CoordinatorProtocol {
 
-    var parentCoordinator: CoordinatorProtocol?
+    var navigationController: UINavigationController?
+    var bulider: BuilderModuleProtocol?
 
-    var children: [CoordinatorProtocol] = []
-
-    var navigationController: UINavigationController
-
-    init(navigationController: UINavigationController) {
+    init(navigationController: UINavigationController?, bulider: BuilderModuleProtocol?) {
         self.navigationController = navigationController
+        self.bulider = bulider
     }
 
     func start() {
-        if UserDefaults.standard.bool(forKey: "isWasRun") {
-            startApp()
-            return
-        }
-        let vc = OnBoardingViewController()
+        let presenter = OnBoardingPresenter()
+        let vc = OnBoardingViewController(presenter: presenter)
         vc.coordinator = self
-        UserDefaults.standard.set(true, forKey: "isWasRun")
-        navigationController.pushViewController(vc, animated: true)
+        navigationController?.pushViewController(vc, animated: true)
     }
 
     func startApp() {
-        // MARK: - debug
-        let vc = WeatherViewController()
-//        let vc = PageViewController()
-        vc.coordinato = self
-        navigationController.pushViewController(vc, animated: true)
+        if let navigationController = navigationController {
+            guard let pageViewController = bulider?.creatMainScreen(coordinator: self) else { return }
+            navigationController.pushViewController(pageViewController, animated: false)
+        }
+    }
+
+    
+    func poptoRootVC() {
+        navigationController?.popToRootViewController(animated: true)
     }
 
 

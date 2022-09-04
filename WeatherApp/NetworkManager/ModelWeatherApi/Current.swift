@@ -10,9 +10,9 @@ import Foundation
 // MARK: - Current
 
 struct Current: Codable {
-    let dt: Int
+    let dt: Double
     let sunrise, sunset: Double
-    let temp, feelsLike: Double
+    var temp, feelsLike: Double
     let pressure, humidity: Int
     let dewPoint, uvi: Double
     let clouds, visibility: Int

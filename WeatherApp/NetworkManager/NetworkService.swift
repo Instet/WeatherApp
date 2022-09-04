@@ -9,8 +9,8 @@ import Foundation
 import UIKit
 
 
-protocol NetworkServiceDelegate {
-    func fetchWeather(_ networking: NetworkServiceProtocol, _ modelWeather: Weather)
+protocol NetworkServiceDelegate: AnyObject {
+    func fetchWeather(_ networking: NetworkService, _ modelWeather: Weather)
     func fetchFailError(_ error: Error)
 }
 
@@ -51,7 +51,7 @@ class NetworkService: NetworkServiceProtocol {
             URLQueryItem(name: "lon", value: "\(longitude)")
         ]
         if let url = urlComponents.url?.absoluteString {
-            print(url)
+//            print(url)
             perfomeUpdateRequest(url: url)
         } else {
             self.dataDelegate?.fetchFailError(NetworkError.serverError)
@@ -74,8 +74,8 @@ class NetworkService: NetworkServiceProtocol {
                     }
                     if let data = data {
                         comletion(.success(data))
-                        let stringJSON = String(data: data, encoding: .utf8)
-                        print(stringJSON!)
+//                        let stringJSON = String(data: data, encoding: .utf8)
+//                        print(stringJSON!)
                     }
                 }
                 task.resume()
@@ -94,7 +94,7 @@ class NetworkService: NetworkServiceProtocol {
         }
     }
 
-    private func perfomeUpdateRequest(url: String) {
+     func perfomeUpdateRequest(url: String) {
         perfomRequest(url: url) { [weak self] result in
             guard let self = self else { return }
             switch result {
@@ -107,11 +107,6 @@ class NetworkService: NetworkServiceProtocol {
                 self.dataDelegate?.fetchFailError(error)
             }
         }
-
     }
-
-
-
-
 
 }

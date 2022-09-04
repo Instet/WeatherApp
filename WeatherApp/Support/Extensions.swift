@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 
+// MARK: - extension UIView
 public extension UIView {
 
     func addSubviews(_ views: UIView...) {
@@ -16,8 +17,22 @@ public extension UIView {
             self.addSubview($0)
         }
     }
+
+    func dataInDate(_ data: Double, _ format: String, _ option: String?) -> String {
+        let date = Date(timeIntervalSince1970: data)
+        let dateFormat = DateFormatter()
+        if option == nil {
+            dateFormat.dateFormat = format
+        } else {
+            dateFormat.dateFormat = format + option!
+        }
+        dateFormat.timeZone = TimeZone(abbreviation: "UTC")
+        dateFormat.locale = Locale(identifier: "ru_RU")
+        return dateFormat.string(from: date)
+    }
 }
 
+// MARK: - extension UIColor
 public extension UIColor {
 
     convenience init?(hex: String) {
@@ -57,7 +72,7 @@ public extension UIColor {
     }
 }
 
-
+// MARK: - extension UIImageView
 extension UIImageView {
 
     static func getImage(_ name: String) -> UIImageView {
@@ -69,5 +84,12 @@ extension UIImageView {
         }
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
+    }
+}
+// MARK: - extension StringProtocol
+extension StringProtocol {
+    var firstUppercased: String {
+        guard let first = first else { return ""}
+        return String(first).uppercased() + dropFirst()
     }
 }

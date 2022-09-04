@@ -25,6 +25,7 @@ class DailyWeatherForecastCell: UITableViewCell {
     private lazy var descriptionTitleLabel: UILabel = {
         let label = CustomLabel(text: "Нет данных", textColor: .black, font: UIFont.rubikRegular16)
         label.textAlignment = .left
+        label.contentMode = .left
         label.numberOfLines = 1
         return label
     }()
@@ -38,6 +39,7 @@ class DailyWeatherForecastCell: UITableViewCell {
     // MARK: - Chance of rain
     private lazy var chanceRainView: UIView = {
         let view = UIView()
+        view.sizeToFit()
         return view
     }()
 
@@ -57,6 +59,7 @@ class DailyWeatherForecastCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupLayout()
+        self.selectionStyle = .none
     }
 
     required init?(coder: NSCoder) {
@@ -99,7 +102,6 @@ class DailyWeatherForecastCell: UITableViewCell {
 
             descriptionTitleLabel.leadingAnchor.constraint(equalTo: chanceRainView.trailingAnchor, constant: 13),
             descriptionTitleLabel.centerYAnchor.constraint(equalTo: backgroundCell.centerYAnchor),
-            descriptionTitleLabel.trailingAnchor.constraint(equalTo: backgroundCell.trailingAnchor, constant: 72),
 
             tempLabel.centerYAnchor.constraint(equalTo: descriptionTitleLabel.centerYAnchor),
             tempLabel.trailingAnchor.constraint(equalTo: backgroundCell.trailingAnchor, constant: -10),
@@ -107,10 +109,12 @@ class DailyWeatherForecastCell: UITableViewCell {
         ])
     }
 
-    // debug layout
-    func array(string: String) {
-        descriptionTitleLabel.text = string
-        dateLabel.text = string
+    func configCell(_ daily: Daily) {
+        chanceRainImage.image = ImageSet.getImageFromId(id: daily.weather[0].id)
+        dateLabel.text = dataInDate(daily.dt, "dd/MM", nil)
+        chanceRainLabel.text = String(format: "%.0f" ,daily.pop * 100) + "%"
+        descriptionTitleLabel.text = daily.weather[0].weatherDescription
+        tempLabel.text = String(format: "%.0f", floor(daily.temp.min)) + "\u{00B0}-" + String(format: "%.0f", floor(daily.temp.max)) + "\u{00B0} >"
     }
 
 

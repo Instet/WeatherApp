@@ -9,6 +9,22 @@ import UIKit
 
 final class GeneralWeatherView: UIView {
 
+    var weather: Weather? {
+        didSet {
+            guard let weather = weather else { return }
+            self.generalWeatherLabel.text = String(format: "%.0f", floor(weather.daily[0].temp.day)) + "\u{00B0}/" + String(format: "%.0f", floor(weather.daily[0].temp.night)) + "\u{00B0}"
+            self.currentTempLabel.text = String(weather.current.temp) + "\u{00B0}"
+            self.descriptionTempLabel.text = weather.current.weather[0].weatherDescription.firstUppercased
+            self.rainfallLabel.text = String(weather.current.clouds) + "%"
+            self.windDataLabel.text =  String(format: "%.1f", weather.current.windSpeed) + "м/с"
+            self.chanceRainLabel.text = String(format: "%.0f", floor(weather.daily[0].pop * 100)) + "%"
+                // будут настройки
+            self.dateLabel.text = dataInDate(weather.current.dt + weather.timezoneOffset, "HH:mm", ", E dd MMMM")
+            self.sunriseTimeLabel.text = dataInDate(weather.current.sunrise + weather.timezoneOffset, "HH:mm", nil)
+            self.sunsetTimeLabel.text = dataInDate(weather.current.sunset + weather.timezoneOffset, "HH:mm", nil)
+        }
+    }
+
     // MARK: - UI General Elemens
     private lazy var backgroundView: UIView = {
         let view = UIView()
@@ -26,13 +42,13 @@ final class GeneralWeatherView: UIView {
     }()
 
     private lazy var generalWeatherLabel: UILabel = {
-        let label = CustomLabel(text: "-°/-°", textColor: .white, font: UIFont.rubikRegular16)
+        let label = CustomLabel(text: "-\u{00B0}/-\u{00B0}", textColor: .white, font: UIFont.rubikRegular16)
         label.numberOfLines = 1
         return label
     }()
 
     private lazy var currentTempLabel: UILabel = {
-        let label = CustomLabel(text: "-°", textColor: .white, font: UIFont.titleMedium)
+        let label = CustomLabel(text: "-\u{00B0}", textColor: .white, font: UIFont.titleMedium)
         label.numberOfLines = 1
         return label
     }()
@@ -58,7 +74,7 @@ final class GeneralWeatherView: UIView {
     }()
 
     private lazy var rainfallLabel: UILabel = {
-        let label = CustomLabel(text: "-", textColor: .white, font: UIFont.rubikRegular14)
+        let label = CustomLabel(text: "--%", textColor: .white, font: UIFont.rubikRegular14)
         label.numberOfLines = 1
         return label
     }()
@@ -96,7 +112,7 @@ final class GeneralWeatherView: UIView {
     }()
 
     private lazy var chanceRainLabel: UILabel = {
-        let label = CustomLabel(text: "--%", textColor: .white, font: UIFont.rubikRegular14)
+        let label = CustomLabel(text: "--", textColor: .white, font: UIFont.rubikRegular14)
         label.numberOfLines = 1
         return label
     }()
@@ -104,7 +120,7 @@ final class GeneralWeatherView: UIView {
 
     // MARK: - GeneralDate
     private lazy var dateLabel: UILabel = {
-        let label = CustomLabel(text: "--", textColor: ColorSet.colorSet(.yellow), font: UIFont.rubikRegular16)
+        let label = CustomLabel(text: "--%", textColor: ColorSet.colorSet(.yellow), font: UIFont.rubikRegular16)
         label.textAlignment = .center
         label.numberOfLines = 1
         return label
@@ -190,9 +206,7 @@ final class GeneralWeatherView: UIView {
 
             rainfallLabel.centerYAnchor.constraint(equalTo: rainfallView.centerYAnchor),
             rainfallLabel.leadingAnchor.constraint(equalTo: rainfallImage.trailingAnchor, constant: 3),
-            rainfallLabel.trailingAnchor.constraint(equalTo: rainfallView.trailingAnchor),
-            rainfallLabel.widthAnchor.constraint(equalToConstant: 10)
-
+            rainfallLabel.trailingAnchor.constraint(equalTo: rainfallView.trailingAnchor)
         ])
 
         backgroundView.addSubviews(windDataView)
@@ -207,7 +221,6 @@ final class GeneralWeatherView: UIView {
 
             windDataLabel.centerYAnchor.constraint(equalTo: windDataView.centerYAnchor),
             windDataLabel.leadingAnchor.constraint(equalTo: windDataImage.trailingAnchor, constant: 3),
-            windDataLabel.widthAnchor.constraint(equalToConstant: 45),
             windDataLabel.trailingAnchor.constraint(equalTo: windDataView.trailingAnchor)
         ])
 
@@ -223,7 +236,6 @@ final class GeneralWeatherView: UIView {
 
             chanceRainLabel.centerYAnchor.constraint(equalTo: chanceRainView.centerYAnchor),
             chanceRainLabel.leadingAnchor.constraint(equalTo: chanceRainImage.trailingAnchor, constant: 3),
-            chanceRainLabel.widthAnchor.constraint(equalToConstant: 40),
             chanceRainLabel.trailingAnchor.constraint(equalTo: chanceRainView.trailingAnchor)
         ])
 
@@ -258,12 +270,6 @@ final class GeneralWeatherView: UIView {
             sunsetTimeLabel.centerXAnchor.constraint(equalTo: sunsetImage.centerXAnchor)
         ])
 
-
     }
-
-
-
-
-
 
 }

@@ -11,9 +11,9 @@ import CoreLocation
 
 class OnBoardingViewController: UIViewController {
 
-    weak var coordinator: AppCoordinator?
+    var coordinator: AppCoordinator?
+    var presenter: OnBoardingPresenterProtocol?
 
-    private var locationService = LocationService()
 
     private let defaults = UserDefaults.standard
 
@@ -70,6 +70,15 @@ class OnBoardingViewController: UIViewController {
         return button
     }()
 
+    init(presenter: OnBoardingPresenterProtocol) {
+        self.presenter = presenter
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
@@ -117,14 +126,16 @@ class OnBoardingViewController: UIViewController {
 
 
     @objc private func cancelButton() {
-        defaults.set(true, forKey: "isWasRun")
+
     }
 
     func useLocation() {
-        locationService.startLocationManager()
-        defaults.set(true, forKey: "isWasRun")
-
+        presenter?.requestLocation(completion: { 
+            self.coordinator?.startApp()
+        })
     }
 
 
 }
+
+

@@ -7,30 +7,34 @@
 
 import CoreLocation
 
+protocol LocationServiceDelegate: AnyObject {
+    func didUpdateLocation()
+}
+
 class LocationService: NSObject {
 
-    private let locationManager: CLLocationManager
+    weak var delegate: LocationServiceDelegate?
+    let locationManager = CLLocationManager()
+    static var location: Location?
+
+
+
     public var curentLocation: CLLocationCoordinate2D?
 
     override init() {
-        locationManager = CLLocationManager()
         super.init()
         locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters
+
     }
 
     func startLocationManager() {
-        locationManager.delegate = self
-        switch locationManager.authorizationStatus {
-        case .authorizedAlways, .authorizedWhenInUse:
-            locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters
-            locationManager.startUpdatingLocation()
-        case .notDetermined:
-            locationManager.requestWhenInUseAuthorization()
-        case .denied, .restricted:
-            print("отклонен")
-        @unknown default:
-            fatalError()
-        }
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.startUpdatingLocation()
+    }
+
+    func getCurrentLocation() -> Location? {
+        return LocationService.location
     }
 }
 
@@ -39,10 +43,15 @@ extension LocationService: CLLocationManagerDelegate {
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let userLocation = locations.last else { return }
-        self.curentLocation = userLocation.coordinate
+//        locationManager.stopUpdatingLocation()
+        LocationService.location = Location(lat: userLocation.coordinate.latitude, lon: userLocation.coordinate.longitude)
+        self.delegate?.didUpdateLocation()
 
-
-
+        
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print(error.localizedDescription)
     }
 
 }

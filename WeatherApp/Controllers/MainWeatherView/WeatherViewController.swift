@@ -7,12 +7,10 @@
 
 import UIKit
 
-class WeatherViewController: UIViewController, UIScrollViewDelegate {
+class WeatherViewController: UIViewController, MainViewProtocol {
 
-    var coordinato: CoordinatorProtocol?
-
-    // debug layout
-    let array = [25, 35, 65, 75, 74, 43, 45, 34, 34, 56, 21]
+    var coordinator: CoordinatorProtocol?
+    var presenter = WeatherPresenter()
 
     private lazy var generalWeatherView = GeneralWeatherView()
 
@@ -20,7 +18,6 @@ class WeatherViewController: UIViewController, UIScrollViewDelegate {
         let scroll = UIScrollView()
         scroll.delegate = self
         scroll.showsVerticalScrollIndicator = false
-        scroll.isScrollEnabled = true
         return scroll
     }()
 
@@ -66,7 +63,6 @@ class WeatherViewController: UIViewController, UIScrollViewDelegate {
         let tableView = UITableView(frame: .zero, style: .plain)
         tableView.showsVerticalScrollIndicator = false
         tableView.separatorStyle = .none
-        tableView.isScrollEnabled = false
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(DailyWeatherForecastCell.self,
@@ -75,10 +71,13 @@ class WeatherViewController: UIViewController, UIScrollViewDelegate {
     }()
 
 
+
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
         setupLayout()
+        presenter.networkService.dataDelegate = self
+        presenter.getCurrentLocationWeather()
     }
 
 
@@ -87,17 +86,18 @@ class WeatherViewController: UIViewController, UIScrollViewDelegate {
         view.addSubviews(scrollView)
         scrollView.addSubviews(contentView)
         NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
 
 
-            contentView.topAnchor.constraint(equalTo: scrollView.safeAreaLayoutGuide.topAnchor),
+            contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
             contentView.leadingAnchor.constraint(equalTo: scrollView.safeAreaLayoutGuide.leadingAnchor),
             contentView.trailingAnchor.constraint(equalTo: scrollView.safeAreaLayoutGuide.trailingAnchor),
-            contentView.bottomAnchor.constraint(equalTo: scrollView.safeAreaLayoutGuide.bottomAnchor),
+            contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
         ])
+
         contentView.addSubviews(generalWeatherView, detailsFor24hoursButton, collectionHourlyWeather,
                                 forecastLabel, dailyWeatherTable)
         NSLayoutConstraint.activate([
@@ -120,7 +120,8 @@ class WeatherViewController: UIViewController, UIScrollViewDelegate {
             dailyWeatherTable.topAnchor.constraint(equalTo: forecastLabel.bottomAnchor, constant: 10),
             dailyWeatherTable.leadingAnchor.constraint(equalTo: generalWeatherView.leadingAnchor),
             dailyWeatherTable.trailingAnchor.constraint(equalTo: generalWeatherView.trailingAnchor),
-            dailyWeatherTable.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height / 2)
+            dailyWeatherTable.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
+            dailyWeatherTable.heightAnchor.constraint(equalToConstant: 530)
 
             ])
     }
@@ -131,21 +132,16 @@ class WeatherViewController: UIViewController, UIScrollViewDelegate {
     
 }
 
-
-
-
 // MARK: - UICollectionViewDataSource
 extension WeatherViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return array.count
+        return presenter.hours.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: HourlyWeatherForecastCell.self), for: indexPath) as? HourlyWeatherForecastCell
-
         guard let cell = cell else { return UICollectionViewCell() }
-        // debug
-        cell.array(string: String(array[indexPath.row]))
+        cell.configCell(presenter.hours[indexPath.row])
         return cell
     }
 }
@@ -159,8 +155,6 @@ extension WeatherViewController: UICollectionViewDelegateFlowLayout {
     }
 
 }
-
-
 
 
 // MARK: - UITableViewDelegate
@@ -177,15 +171,34 @@ extension WeatherViewController: UITableViewDataSource {
         return 1
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return array.count
+        return presenter.days.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: DailyWeatherForecastCell.self), for: indexPath) as? DailyWeatherForecastCell
         guard let cell = cell else { return UITableViewCell() }
-        cell.array(string: String(array[indexPath.row]))
+        cell.configCell(presenter.days[indexPath.row])
         return cell
     }
 
+}
+
+//MARK: - NetworkServiceDelegate
+extension WeatherViewController: NetworkServiceDelegate {
+    func fetchWeather(_ networking: NetworkService, _ modelWeather: Weather) {
+        print("⚠️")
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.generalWeatherView.weather = modelWeather
+            self.presenter.hours = self.presenter.getHoursFromWeather(from: modelWeather)
+            self.presenter.days = self.presenter.getDailyFromWeather(from: modelWeather)
+            self.dailyWeatherTable.reloadData()
+            self.collectionHourlyWeather.reloadData()
+        }
+    }
+
+    func fetchFailError(_ error: Error) {
+
+    }
 
 }

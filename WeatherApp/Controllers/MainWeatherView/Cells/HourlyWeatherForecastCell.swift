@@ -29,7 +29,7 @@ class HourlyWeatherForecastCell: UICollectionViewCell {
     }()
 
     private lazy var tempLabel: UILabel = {
-        let label = CustomLabel(text: "--°", textColor: .black, font: UIFont.rubikRegular16)
+        let label = CustomLabel(text: "--\u{00B0}", textColor: .black, font: UIFont.rubikRegular16)
         return label
     }()
 
@@ -43,9 +43,11 @@ class HourlyWeatherForecastCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // debug layout
-    func array(string: String) {
-        timeLabel.text = string
+    
+    func configCell(_ hourly: Hourly) {
+        timeLabel.text = dataInDate(Double(hourly.dt), "HH:mm", nil)
+        tempLabel.text = String(format: "%.0f", hourly.temp) + "\u{00B0}"
+        statusImage.image = ImageSet.getImageFromId(id: hourly.weather[0].id)
     }
 
 
