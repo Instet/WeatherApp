@@ -13,6 +13,15 @@ struct Current: Codable {
     let dt: Double
     let sunrise, sunset: Double
     var temp, feelsLike: Double
+
+//    var tempString: String {
+//        if UserDefaults.standard.value(forKey: SettingsKey.temperature.rawValue) as? String  == "C" {
+//            return String(temp) + "\u{00B0}"
+//        } else {
+//            return String(Int(temp * 9 / 5 + 32)) + "F\u{00B0}"
+//        }
+//    }
+    
     let pressure, humidity: Int
     let dewPoint, uvi: Double
     let clouds, visibility: Int

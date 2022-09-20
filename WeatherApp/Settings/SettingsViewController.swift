@@ -11,6 +11,8 @@ final class SettingsViewController: UIViewController {
 
     // MARK: доработать согласно макету
 
+    weak var coordinator: AppCoordinator?
+
     private lazy var backgroundView: UIView = {
         let view = UIView()
         view.backgroundColor = ColorSet.colorSet(.backgroundPath)
@@ -106,7 +108,7 @@ final class SettingsViewController: UIViewController {
     private lazy var setupSettingsButton: UIButton = {
         let button = CustomButton(title: "Установить",
                                   font: UIFont.rubikRegular16) {
-            print("setup")
+            self.setupSettings()
         }
         return button
     }()
@@ -119,9 +121,7 @@ final class SettingsViewController: UIViewController {
             self.cloudTop.frame.origin.x = self.view.frame.origin.x
             self.cloudMiddle.frame.origin.x = self.view.frame.width - self.cloudMiddle.frame.width
             self.cloudBottom.center.x = self.view.center.x
-            //MARK: Нужна доработка
         }
-
     }
 
 
@@ -129,6 +129,7 @@ final class SettingsViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = ColorSet.colorSet(.blue)
         setupConstraints()
+        saveSettings()
 
     }
 
@@ -166,5 +167,53 @@ final class SettingsViewController: UIViewController {
         ])
     }
     
+
+    private func setupSettings() {
+        let tempInd = segmentTemp.selectedSegmentIndex
+        let temp = Segments.selectSegmets(.temperature)[tempInd]
+        UserDefaults.standard.setValue(temp, forKey: SettingsKey.temperature.rawValue)
+
+        let windInd = segmentWind.selectedSegmentIndex
+        let wind = Segments.selectSegmets(.windSpeed)[windInd]
+        UserDefaults.standard.setValue(wind, forKey: SettingsKey.windSpeed.rawValue)
+
+
+        let timeInd = segmentTime.selectedSegmentIndex
+        let time = Segments.selectSegmets(.timeFormat)[timeInd]
+        UserDefaults.standard.setValue(time, forKey: SettingsKey.timeFormat.rawValue)
+
+        // - push notification settings will be saved here
+        self.dismiss(animated: false)
+    }
+
+
+
+    private func saveSettings() {
+        let temperature = UserDefaults.standard.object(forKey: SettingsKey.temperature.rawValue) as? String ?? "C"
+        if temperature == "C" {
+            segmentTemp.selectedSegmentIndex = 0
+        } else {
+            segmentTemp.selectedSegmentIndex = 1
+        }
+
+        let wind = UserDefaults.standard.object(forKey: SettingsKey.windSpeed.rawValue) as? String ?? "Km"
+        if wind == "Km" {
+            segmentWind.selectedSegmentIndex = 1
+        } else {
+            segmentWind.selectedSegmentIndex = 0
+        }
+
+        let time = UserDefaults.standard.object(forKey: SettingsKey.timeFormat.rawValue) as? String ?? "24"
+        if time == "24" {
+            segmentTime.selectedSegmentIndex = 1
+        } else {
+            segmentTime.selectedSegmentIndex = 0
+        }
+
+        // In developing
+        segmentNotification.selectedSegmentIndex = 1
+        segmentNotification.isEnabled = false
+    }
+
 
 }

@@ -9,6 +9,8 @@ import UIKit
 
 class HourlyWeatherForecastCell: UICollectionViewCell {
 
+    var option = Options()
+
     private lazy var backgroundCell: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 22
@@ -36,7 +38,6 @@ class HourlyWeatherForecastCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupLayout()
-
     }
 
     required init?(coder: NSCoder) {
@@ -44,11 +45,17 @@ class HourlyWeatherForecastCell: UICollectionViewCell {
     }
 
     
-    func configCell(_ hourly: Hourly) {
-        timeLabel.text = dataInDate(Double(hourly.dt), "HH:mm", nil)
-        tempLabel.text = String(format: "%.0f", hourly.temp) + "\u{00B0}"
+    func configCell(_ hourly: Hourly, _ weather: Weather) {
+        timeLabel.text = dataInDate(Double(hourly.dt ) + weather.timezoneOffset, formatDate(option.timeFormat), nil)
+        tempLabel.text = convertTemp(hourly.temp, to: option.temperature)
         statusImage.image = ImageSet.getImageFromId(id: hourly.weather[0].id)
     }
+
+//    func selectCurrentTime() {
+//        backgroundCell.backgroundColor = ColorSet.colorSet(.blue)
+//        timeLabel.textColor = .white
+//        tempLabel.textColor = .white
+//    }
 
 
     private func setupLayout() {
@@ -66,6 +73,8 @@ class HourlyWeatherForecastCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             timeLabel.topAnchor.constraint(equalTo: backgroundCell.topAnchor, constant: 15),
             timeLabel.centerXAnchor.constraint(equalTo: backgroundCell.centerXAnchor),
+            timeLabel.widthAnchor.constraint(equalToConstant: 37),
+            timeLabel.bottomAnchor.constraint(equalTo: backgroundCell.bottomAnchor, constant: -51),
 
             statusImage.widthAnchor.constraint(equalToConstant: 16),
             statusImage.heightAnchor.constraint(equalToConstant: 16),

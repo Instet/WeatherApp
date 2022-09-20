@@ -35,8 +35,9 @@ class MainScreenViewController: UIPageViewController, MainViewProtocol {
         delegate = self
         dataSource = self
         setupView()
+    
         // debug
-        let weather = WeatherViewController()
+        let weather = WeatherViewController(coordinator: presenter?.coordinator)
         setViewControllers([weather], direction: .forward, animated: true, completion: nil)
     }
 
@@ -65,7 +66,8 @@ class MainScreenViewController: UIPageViewController, MainViewProtocol {
     }
 
     @objc private func goToSetting() {
-        print("goToSetting")
+        presenter?.coordinator?.goToSetting()
+
     }
 
     @objc private func addCityAction() {

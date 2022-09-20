@@ -14,7 +14,10 @@ protocol CoordinatorProtocol: AnyObject {
 
     func start()
     func startApp()
+    func goToSetting()
+    func pushDetailWeather(index: IndexPath)
     func poptoRootVC()
+
 }
 
 
@@ -40,6 +43,18 @@ class AppCoordinator: CoordinatorProtocol {
             guard let pageViewController = bulider?.creatMainScreen(coordinator: self) else { return }
             navigationController.pushViewController(pageViewController, animated: false)
         }
+    }
+    func goToSetting() {
+        let setting = SettingsViewController()
+        setting.modalPresentationStyle = .fullScreen
+        navigationController?.present(setting, animated: false)
+    }
+
+    func pushDetailWeather(index: IndexPath) {
+        print("🔴 - DetailWeatherViewController ")
+        let vc = DetailWeatherViewController(index: index)
+        navigationController?.pushViewController(vc, animated: true)
+
     }
 
     

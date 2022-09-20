@@ -16,9 +16,6 @@ class LocationService: NSObject {
     weak var delegate: LocationServiceDelegate?
     let locationManager = CLLocationManager()
     static var location: Location?
-
-
-
     public var curentLocation: CLLocationCoordinate2D?
 
     override init() {
@@ -43,11 +40,9 @@ extension LocationService: CLLocationManagerDelegate {
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let userLocation = locations.last else { return }
-//        locationManager.stopUpdatingLocation()
         LocationService.location = Location(lat: userLocation.coordinate.latitude, lon: userLocation.coordinate.longitude)
         self.delegate?.didUpdateLocation()
 
-        
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {

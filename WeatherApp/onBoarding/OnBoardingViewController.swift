@@ -11,7 +11,7 @@ import CoreLocation
 
 class OnBoardingViewController: UIViewController {
 
-    var coordinator: AppCoordinator?
+    var coordinator: AppCoordinator? 
     var presenter: OnBoardingPresenterProtocol?
 
 

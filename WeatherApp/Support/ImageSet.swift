@@ -21,7 +21,7 @@ enum ImageSet: String {
     case rain, redact, settings
     case show, shower, sunrise, snow
     case sunset, thermometer, thunderstorm
-    case wind, windImage, fog
+    case wind, windImage, fog, arrowPop
 
     static func getImageFromId(id: Int) -> UIImage? {
         switch id {

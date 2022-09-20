@@ -9,19 +9,20 @@ import UIKit
 
 final class GeneralWeatherView: UIView {
 
+    var option = Options()
+    
     var weather: Weather? {
         didSet {
             guard let weather = weather else { return }
-            self.generalWeatherLabel.text = String(format: "%.0f", floor(weather.daily[0].temp.day)) + "\u{00B0}/" + String(format: "%.0f", floor(weather.daily[0].temp.night)) + "\u{00B0}"
-            self.currentTempLabel.text = String(weather.current.temp) + "\u{00B0}"
+            self.generalWeatherLabel.text =  convertTemp(weather.daily[0].temp.day, to: option.temperature) + "/" + convertTemp(weather.daily[0].temp.night, to: option.temperature)
+            self.currentTempLabel.text = convertTemp(weather.current.temp, to: option.temperature)
             self.descriptionTempLabel.text = weather.current.weather[0].weatherDescription.firstUppercased
             self.rainfallLabel.text = String(weather.current.clouds) + "%"
-            self.windDataLabel.text =  String(format: "%.1f", weather.current.windSpeed) + "м/с"
+            self.windDataLabel.text =  convertSpeed(weather.current.windSpeed, to: option.windSpeed)
             self.chanceRainLabel.text = String(format: "%.0f", floor(weather.daily[0].pop * 100)) + "%"
-                // будут настройки
-            self.dateLabel.text = dataInDate(weather.current.dt + weather.timezoneOffset, "HH:mm", ", E dd MMMM")
-            self.sunriseTimeLabel.text = dataInDate(weather.current.sunrise + weather.timezoneOffset, "HH:mm", nil)
-            self.sunsetTimeLabel.text = dataInDate(weather.current.sunset + weather.timezoneOffset, "HH:mm", nil)
+            self.dateLabel.text = dataInDate(weather.current.dt + weather.timezoneOffset, formatDate(option.timeFormat), ", E dd MMMM")
+            self.sunriseTimeLabel.text = dataInDate(weather.current.sunrise + weather.timezoneOffset, formatDate(option.timeFormat), nil)
+            self.sunsetTimeLabel.text = dataInDate(weather.current.sunset + weather.timezoneOffset, formatDate(option.timeFormat), nil)
         }
     }
 

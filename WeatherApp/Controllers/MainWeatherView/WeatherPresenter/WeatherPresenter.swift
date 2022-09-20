@@ -10,7 +10,6 @@ import UIKit
 
 protocol WeatherViewProtocol: AnyObject {
 
-
 }
 
 protocol WeatherPresenterProtocol: AnyObject {
@@ -29,18 +28,22 @@ final class WeatherPresenter: WeatherPresenterProtocol {
     let networkService = NetworkService()
     let locationService = LocationService()
 
+
     func getCurrentLocationWeather() {
-        DispatchQueue.global().async {
+        DispatchQueue.global().async { [self] in
             self.currentLocation = self.locationService.getCurrentLocation()
-//            guard let currentLocation = self.currentLocation else {
-//                print("что то пошло не так")
-//                self.currentLocation = self.locationService.getCurrentLocation()
-//                return
-//            }
-            self.networkService.fetchLocationWeather(longitude: self.currentLocation!.lon, latitute: self.currentLocation!.lat)
+            if currentLocation == nil {
+                self.currentLocation = self.locationService.getCurrentLocation()
+                print(currentLocation as Any)
+                return
+            }
+            self.networkService.fetchLocationWeather(longitude: currentLocation!.lon, latitute: currentLocation!.lat)
+
         }
     }
 
+
+    
      func getHoursFromWeather(from weather: Weather) -> [Hourly] {
         var hours = [Hourly]()
         let hoursFromNet = weather.hourly

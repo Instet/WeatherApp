@@ -25,18 +25,21 @@ class OnBoardingPresenter: LocationServiceDelegate, OnBoardingPresenterProtocol 
             if LocationService.location != nil {
                 UserDefaults().set(true, forKey: "isLocationDid")
                 self.locationService.locationManager.stopUpdatingLocation()
+            } else {
+                self.locationService.locationManager.startUpdatingLocation()
             }
+
             if UserDefaults().bool(forKey: "isLocationDid") == true {
-                print("go to main screen")
                 completion()
             }
+
         }
     }
 
 
     func didUpdateLocation() {
         self.requestLocation {
-            print("update location")
+          //  print("go to main")
         }
     }
 

@@ -9,6 +9,8 @@ import UIKit
 
 class DailyWeatherForecastCell: UITableViewCell {
 
+    var option = Options()
+
     private lazy var backgroundCell: UIView = {
         let view = UIView()
         view.backgroundColor = ColorSet.colorSet(.backgroundPath)
@@ -99,6 +101,7 @@ class DailyWeatherForecastCell: UITableViewCell {
 
             chanceRainView.leadingAnchor.constraint(equalTo: backgroundCell.leadingAnchor, constant: 10),
             chanceRainView.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 5),
+            chanceRainView.widthAnchor.constraint(equalToConstant: 45),
 
             descriptionTitleLabel.leadingAnchor.constraint(equalTo: chanceRainView.trailingAnchor, constant: 13),
             descriptionTitleLabel.centerYAnchor.constraint(equalTo: backgroundCell.centerYAnchor),
@@ -113,8 +116,8 @@ class DailyWeatherForecastCell: UITableViewCell {
         chanceRainImage.image = ImageSet.getImageFromId(id: daily.weather[0].id)
         dateLabel.text = dataInDate(daily.dt, "dd/MM", nil)
         chanceRainLabel.text = String(format: "%.0f" ,daily.pop * 100) + "%"
-        descriptionTitleLabel.text = daily.weather[0].weatherDescription
-        tempLabel.text = String(format: "%.0f", floor(daily.temp.min)) + "\u{00B0}-" + String(format: "%.0f", floor(daily.temp.max)) + "\u{00B0} >"
+        descriptionTitleLabel.text = daily.weather[0].weatherDescription.firstUppercased
+        tempLabel.text = convertTemp(daily.temp.min, to: option.temperature) + "-" + convertTemp(daily.temp.max, to: option.temperature) + " >" 
     }
 
 

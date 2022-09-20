@@ -18,7 +18,7 @@ final class CustomLabel: UILabel {
         self.backgroundColor = .clear
         self.contentMode = .left
         self.numberOfLines = 0
-        self.lineBreakMode = .byWordWrapping
+        //self.lineBreakMode = .byWordWrapping
         self.adjustsFontSizeToFitWidth = true
     }
 

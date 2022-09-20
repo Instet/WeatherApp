@@ -12,22 +12,21 @@ protocol MainViewProtocol: AnyObject {
 }
 
 protocol MainViewPresenterProtocol: AnyObject {
-    init(view: MainViewProtocol, networkService: NetworkServiceProtocol, coordinator: CoordinatorProtocol)
+    var coordinator: CoordinatorProtocol? { get }
+    init(view: MainViewProtocol, coordinator: CoordinatorProtocol)
 
 }
 
 final class MainPresenter: MainViewPresenterProtocol {
 
     weak var view: MainViewProtocol?
-    let networkService: NetworkServiceProtocol!
     var coordinator: CoordinatorProtocol?
 
 
-    init(view: MainViewProtocol, networkService: NetworkServiceProtocol, coordinator: CoordinatorProtocol) {
+    init(view: MainViewProtocol, coordinator: CoordinatorProtocol) {
         self.view = view
-        self.networkService = networkService
         self.coordinator = coordinator
-       
+
     }
 
 }

@@ -9,9 +9,19 @@ import UIKit
 
 class WeatherViewController: UIViewController, MainViewProtocol {
 
-    var coordinator: CoordinatorProtocol?
     var presenter = WeatherPresenter()
+    var option = Options()
+    var coordinator: CoordinatorProtocol?
 
+    init(coordinator: CoordinatorProtocol?) {
+        super.init(nibName: nil, bundle: nil)
+        self.coordinator = coordinator
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     private lazy var generalWeatherView = GeneralWeatherView()
 
     private lazy var scrollView: UIScrollView = {
@@ -70,14 +80,19 @@ class WeatherViewController: UIViewController, MainViewProtocol {
         return tableView
     }()
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        option = getUserDefaultsSettings()
+        generalWeatherView.option = option
+        presenter.networkService.dataDelegate = self
+        presenter.getCurrentLocationWeather()
+
+    }
 
 
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupLayout()
-        presenter.networkService.dataDelegate = self
-        presenter.getCurrentLocationWeather()
     }
 
 
@@ -85,6 +100,8 @@ class WeatherViewController: UIViewController, MainViewProtocol {
 
         view.addSubviews(scrollView)
         scrollView.addSubviews(contentView)
+
+
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -141,7 +158,9 @@ extension WeatherViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: HourlyWeatherForecastCell.self), for: indexPath) as? HourlyWeatherForecastCell
         guard let cell = cell else { return UICollectionViewCell() }
-        cell.configCell(presenter.hours[indexPath.row])
+        cell.option = option
+        guard let weather = presenter.weather else { return UICollectionViewCell() }
+        cell.configCell(presenter.hours[indexPath.row], weather)
         return cell
     }
 }
@@ -162,6 +181,10 @@ extension WeatherViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 66
     }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        coordinator?.pushDetailWeather(index: indexPath)
+
+    }
 
 }
 
@@ -177,6 +200,7 @@ extension WeatherViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: DailyWeatherForecastCell.self), for: indexPath) as? DailyWeatherForecastCell
         guard let cell = cell else { return UITableViewCell() }
+        cell.option = option
         cell.configCell(presenter.days[indexPath.row])
         return cell
     }
@@ -186,19 +210,19 @@ extension WeatherViewController: UITableViewDataSource {
 //MARK: - NetworkServiceDelegate
 extension WeatherViewController: NetworkServiceDelegate {
     func fetchWeather(_ networking: NetworkService, _ modelWeather: Weather) {
-        print("⚠️")
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             self.generalWeatherView.weather = modelWeather
             self.presenter.hours = self.presenter.getHoursFromWeather(from: modelWeather)
             self.presenter.days = self.presenter.getDailyFromWeather(from: modelWeather)
+            self.presenter.weather = modelWeather
             self.dailyWeatherTable.reloadData()
             self.collectionHourlyWeather.reloadData()
         }
     }
 
     func fetchFailError(_ error: Error) {
-
+        print("бачок потик")
     }
 
 }
