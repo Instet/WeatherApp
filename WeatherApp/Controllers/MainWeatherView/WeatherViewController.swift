@@ -143,8 +143,11 @@ class WeatherViewController: UIViewController, MainViewProtocol {
             ])
     }
 
+    // скорректировать
     @objc private func detailsFor24hours() {
         print("detailsFor24hours")
+        let vc = HourlyWeatherViewController()
+        navigationController?.pushViewController(vc, animated: true)
     }
     
 }
@@ -183,6 +186,7 @@ extension WeatherViewController: UITableViewDelegate {
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         coordinator?.pushDetailWeather(index: indexPath)
+        
 
     }
 

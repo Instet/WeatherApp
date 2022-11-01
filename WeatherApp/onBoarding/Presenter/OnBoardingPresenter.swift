@@ -39,7 +39,7 @@ class OnBoardingPresenter: LocationServiceDelegate, OnBoardingPresenterProtocol 
 
     func didUpdateLocation() {
         self.requestLocation {
-          //  print("go to main")
+            print("go to main")
         }
     }
 

@@ -61,6 +61,7 @@ class NetworkService: NetworkServiceProtocol {
     private func fetchApiKeyString() -> String {
         let data = Data(dataKey)
         let key = String(data: data, encoding: .utf8)
+        print(key)
         return key ?? ""
     }
 
@@ -74,8 +75,8 @@ class NetworkService: NetworkServiceProtocol {
                     }
                     if let data = data {
                         comletion(.success(data))
-//                        let stringJSON = String(data: data, encoding: .utf8)
-//                        print(stringJSON!)
+                        let stringJSON = String(data: data, encoding: .utf8)
+                        print(stringJSON!)
                     }
                 }
                 task.resume()

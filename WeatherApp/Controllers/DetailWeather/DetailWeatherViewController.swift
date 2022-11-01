@@ -81,7 +81,6 @@ class DetailWeatherViewController: UIViewController {
         setupLayout()
         presenter.networkService.dataDelegate = self
         presenter.getCurrentLocationWeather()
-
     }
 
     private func setupLayout() {
@@ -188,10 +187,10 @@ extension DetailWeatherViewController: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         index = indexPath
-
-        // debug
-
+        presenter.getCurrentLocationWeather()
     }
+
+
 
 
 }
@@ -200,19 +199,23 @@ extension DetailWeatherViewController: UICollectionViewDelegateFlowLayout {
 extension DetailWeatherViewController: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        print(presenter.days.count)
         return presenter.days.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: indentifire, for: indexPath) as? DatesForecastCell else { return UICollectionViewCell() }
         cell.day = presenter.days[indexPath.item]
+        collectionView.scrollToItem(at: index, at: .centeredHorizontally, animated: true)
         if indexPath.item == index.item {
             cell.colorBackgroundCell = ColorSet.colorSet(.blue)
             cell.textColor = .white
+        } else {
+            cell.colorBackgroundCell = .white
+            cell.textColor = .black
         }
         return cell
     }
+
 
 
 }
